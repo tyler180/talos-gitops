@@ -6,3 +6,4 @@ resources:
   - storage/nfs-csi/application.yaml
   - storage/nas-nfs/application.yaml
   - networking/metallb/application.yaml
+  - networking/metallb/config-application.yaml
