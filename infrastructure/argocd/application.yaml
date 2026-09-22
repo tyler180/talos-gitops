@@ -14,7 +14,10 @@ spec:
       valuesObject:
         configs:
           cm:
+            url: https://argocd.k8s.749rmw.com
             kustomize.buildOptions: --enable-alpha-plugins --enable-exec
+          params:
+            server.insecure: true
         repoServer:
           env:
             - name: SOPS_AGE_KEY_FILE
