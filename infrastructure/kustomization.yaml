@@ -10,3 +10,5 @@ resources:
   - networking/envoy-gateway/application.yaml
   - networking/envoy-gateway/config-application.yaml
   - applications/whoami.yaml
+  - cert-manager/application.yaml
+  - cert-manager/config-application.yaml

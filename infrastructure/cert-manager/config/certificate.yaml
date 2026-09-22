@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-k8s-749rmw-com
+  namespace: envoy-gateway-system
+spec:
+  secretName: wildcard-k8s-749rmw-com-tls
+  issuerRef:
+    name: letsencrypt-route53
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.k8s.749rmw.com"
+    - k8s.749rmw.com
