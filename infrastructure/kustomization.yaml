@@ -12,3 +12,4 @@ resources:
   - applications/whoami.yaml
   - cert-manager/application.yaml
   - cert-manager/config-application.yaml
+  - secrets/application.yaml

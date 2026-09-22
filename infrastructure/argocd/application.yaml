@@ -11,6 +11,34 @@ spec:
     targetRevision: "10.1.2"
     helm:
       releaseName: argocd
+      valuesObject:
+        configs:
+          cm:
+            kustomize.buildOptions: --enable-alpha-plugins --enable-exec
+        repoServer:
+          env:
+            - name: SOPS_AGE_KEY_FILE
+              value: /sops-age/keys.txt
+          initContainers:
+            - name: install-ksops
+              image: viaductoss/ksops:v4.5.1
+              command: [/usr/local/bin/ksops, install, /custom-tools]
+              volumeMounts:
+                - name: custom-tools
+                  mountPath: /custom-tools
+          volumes:
+            - name: custom-tools
+              emptyDir: {}
+            - name: sops-age
+              secret:
+                secretName: sops-age
+          volumeMounts:
+            - name: custom-tools
+              mountPath: /usr/local/bin/ksops
+              subPath: ksops
+            - name: sops-age
+              mountPath: /sops-age
+              readOnly: true
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

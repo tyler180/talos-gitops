@@ -22,11 +22,10 @@ kubectl -n cert-manager rollout status deployment/cert-manager-cainjector
 python3 /Users/tylermclean/Projects/talos-gitops/infrastructure/cert-manager/bootstrap-route53-secret.py
 ```
 
-The helper explicitly targets the physical kubeconfig and privately prompts for
-both AWS values. It sends the Secret through stdin without creating a plaintext
-file. This is a manual bootstrap dependency, not an Argo-managed Secret. Keep the
-credentials in your password manager and rerun the helper for cluster recovery
-or credential rotation. Do not commit credentials or decrypted Secret manifests.
+The helper encrypts both values using the repository SOPS configuration, writes
+only ciphertext to `infrastructure/secrets/route53-credentials.sops.yaml`, and
+registers it with KSOPS. Commit/push and sync `cluster-secrets` before proceeding.
+Complete the SOPS rollout in `infrastructure/argocd/SOPS.md` first.
 
 5. Validate the custom resources now that their CRDs and webhook exist:
 
