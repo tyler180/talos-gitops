@@ -18,3 +18,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.k8s.749rmw.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: wildcard-k8s-749rmw-com-tls
+      allowedRoutes:
+        namespaces:
+          from: All
