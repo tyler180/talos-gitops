@@ -9,3 +9,4 @@ resources:
   - networking/metallb/config-application.yaml
   - networking/envoy-gateway/application.yaml
   - networking/envoy-gateway/config-application.yaml
+  - applications/whoami.yaml
