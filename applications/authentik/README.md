@@ -40,7 +40,9 @@ curl --noproxy '*' -I http://authentik.k8s.749rmw.com/
 curl --noproxy '*' -I https://authentik.k8s.749rmw.com/
 ```
 
-Complete the initial administrator setup at this exact URL, including the
-trailing slash:
+Start the initial administrator setup from the instance root:
 
-`https://authentik.k8s.749rmw.com/if/flow/initial-setup/`
+`https://authentik.k8s.749rmw.com/`
+
+Authentik redirects the browser into the initial-setup flow after establishing
+the setup context. Opening the flow URL directly is denied by Authentik 2026.8.
