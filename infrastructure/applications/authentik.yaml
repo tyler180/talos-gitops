@@ -40,6 +40,23 @@ spec:
             secretKeys:
               userPasswordKey: AUTHENTIK_POSTGRESQL__PASSWORD
           primary:
+            podSecurityContext:
+              enabled: true
+              fsGroup: 100
+              fsGroupChangePolicy: OnRootMismatch
+            containerSecurityContext:
+              enabled: true
+              runAsUser: 1024
+              runAsGroup: 100
+              runAsNonRoot: true
+              privileged: false
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              seccompProfile:
+                type: RuntimeDefault
             persistence:
               enabled: true
               storageClass: nas-nfs
