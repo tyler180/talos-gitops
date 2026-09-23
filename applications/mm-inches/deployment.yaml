@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: mm-inches
-          image: tyler180/mm-inches:v0.1.0
+          image: tyler180/mm-inches:v0.1.1
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -46,6 +46,8 @@ spec:
               cpu: 100m
               memory: 64Mi
           securityContext:
+            runAsUser: 65532
+            runAsGroup: 65532
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
