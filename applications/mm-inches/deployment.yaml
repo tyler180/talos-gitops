@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: mm-inches
-          image: ghcr.io/tyler180/mm-inches:v0.1.0
+          image: tyler180/mm-inches:v0.1.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
