@@ -10,6 +10,8 @@ resources:
   - networking/envoy-gateway/application.yaml
   - networking/envoy-gateway/config-application.yaml
   - applications/whoami.yaml
+  - applications/authentik-config.yaml
+  - applications/authentik.yaml
   - cert-manager/application.yaml
   - cert-manager/config-application.yaml
   - secrets/application.yaml
