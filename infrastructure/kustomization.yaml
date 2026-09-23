@@ -13,3 +13,4 @@ resources:
   - cert-manager/application.yaml
   - cert-manager/config-application.yaml
   - secrets/application.yaml
+  - monitoring/metrics-server/application.yaml
