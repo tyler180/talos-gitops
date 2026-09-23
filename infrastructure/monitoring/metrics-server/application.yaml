@@ -14,7 +14,7 @@ spec:
       releaseName: metrics-server
       valuesObject:
         args:
-          - --kubelet-insecure-tls
+          - --kubelet-certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 
         apiService:
           insecureSkipTLSVerify: false
