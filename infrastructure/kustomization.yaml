@@ -14,3 +14,4 @@ resources:
   - cert-manager/config-application.yaml
   - secrets/application.yaml
   - monitoring/metrics-server/application.yaml
+  - monitoring/kubelet-csr-approver/application.yaml
