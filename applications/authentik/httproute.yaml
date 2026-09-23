@@ -9,7 +9,7 @@ spec:
       namespace: envoy-gateway-system
       sectionName: https
   hostnames:
-    - authentik.k8s.749rmw.com
+    - auth.k8s.749rmw.com
   rules:
     - backendRefs:
         - name: authentik-server

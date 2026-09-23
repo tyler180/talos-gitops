@@ -1,6 +1,6 @@
 # Authentik
 
-Authentik is exposed at `https://authentik.k8s.749rmw.com` through the shared
+Authentik is exposed at `https://auth.k8s.749rmw.com` through the shared
 Envoy Gateway. HTTP requests are redirected to HTTPS.
 
 ## Persistent data
@@ -36,13 +36,13 @@ kubectl -n authentik rollout status deployment/authentik-server --timeout=300s
 kubectl -n authentik rollout status deployment/authentik-worker --timeout=300s
 kubectl -n authentik rollout status statefulset/authentik-postgresql --timeout=300s
 kubectl -n authentik get httproute
-curl --noproxy '*' -I http://authentik.k8s.749rmw.com/
-curl --noproxy '*' -I https://authentik.k8s.749rmw.com/
+curl --noproxy '*' -I http://auth.k8s.749rmw.com/
+curl --noproxy '*' -I https://auth.k8s.749rmw.com/
 ```
 
 Start the initial administrator setup from the instance root:
 
-`https://authentik.k8s.749rmw.com/`
+`https://auth.k8s.749rmw.com/`
 
 Authentik redirects the browser into the initial-setup flow after establishing
 the setup context. Opening the flow URL directly is denied by Authentik 2026.8.
