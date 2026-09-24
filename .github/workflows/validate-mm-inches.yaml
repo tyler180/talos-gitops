@@ -1,0 +1,39 @@
+name: Validate mm-inches
+
+on:
+  pull_request:
+    paths:
+      - applications/mm-inches/**
+      - infrastructure/applications/mm-inches.yaml
+      - infrastructure/kustomization.yaml
+      - .github/workflows/validate-mm-inches.yaml
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out GitOps repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install kubectl
+        env:
+          KUBECTL_VERSION: v1.35.0
+          KUBECTL_SHA256: a2e984a18a0c063279d692533031c1eff93a262afcc0afdc517375432d060989
+        run: |
+          curl --fail --silent --show-error --location \
+            --output /tmp/kubectl \
+            "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          echo "${KUBECTL_SHA256}  /tmp/kubectl" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/kubectl-bin"
+          install -m 0755 /tmp/kubectl "$RUNNER_TEMP/kubectl-bin/kubectl"
+          echo "$RUNNER_TEMP/kubectl-bin" >>"$GITHUB_PATH"
+
+      - name: Render mm-inches manifests
+        run: kubectl kustomize applications/mm-inches >/tmp/mm-inches.yaml
+
+      - name: Render infrastructure applications
+        run: kubectl kustomize infrastructure >/tmp/infrastructure.yaml
