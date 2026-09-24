@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: mm-inches
-          image: tyler180/mm-inches@sha256:bfee391100842d8ba2c8423b494589dfbfd9c063641e72d747b7979a19a04f4f
+          image: tyler180/mm-inches:v0.1.2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
