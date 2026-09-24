@@ -19,10 +19,18 @@ jobs:
       - name: Check out GitOps repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4
-        with:
-          version: v1.35.0
+      - name: Install kubectl
+        env:
+          KUBECTL_VERSION: v1.35.0
+          KUBECTL_SHA256: a2e984a18a0c063279d692533031c1eff93a262afcc0afdc517375432d060989
+        run: |
+          curl --fail --silent --show-error --location \
+            --output /tmp/kubectl \
+            "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          echo "${KUBECTL_SHA256}  /tmp/kubectl" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/kubectl-bin"
+          install -m 0755 /tmp/kubectl "$RUNNER_TEMP/kubectl-bin/kubectl"
+          echo "$RUNNER_TEMP/kubectl-bin" >>"$GITHUB_PATH"
 
       - name: Render mm-inches manifests
         run: kubectl kustomize applications/mm-inches >/tmp/mm-inches.yaml
