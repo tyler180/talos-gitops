@@ -4,7 +4,7 @@ metadata:
   name: letsencrypt-route53
 spec:
   acme:
-    email: tyler180@gmail.com
+    email: acme@749rmw.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-route53
@@ -15,7 +15,7 @@ spec:
         dns01:
           route53:
             region: us-west-2
-            hostedZoneID: Z04272303NZ93YPTT8MBI
+            hostedZoneID: EXAMPLEHOSTEDZONEID
             accessKeyIDSecretRef:
               name: route53-credentials
               key: access-key-id

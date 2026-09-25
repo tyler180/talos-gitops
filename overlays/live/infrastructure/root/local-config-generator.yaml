@@ -1,0 +1,10 @@
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: infrastructure-local-config-generator
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: ksops
+files:
+  - local-config.sops.yaml

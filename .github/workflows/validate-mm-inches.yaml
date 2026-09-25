@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - applications/mm-inches/**
+      - overlays/live/infrastructure/root/**
       - infrastructure/applications/mm-inches.yaml
       - infrastructure/kustomization.yaml
       - .github/workflows/validate-mm-inches.yaml
@@ -37,3 +38,7 @@ jobs:
 
       - name: Render infrastructure applications
         run: kubectl kustomize infrastructure >/tmp/infrastructure.yaml
+
+      - name: Verify live configuration remains encrypted
+        run: |
+          grep --quiet '^sops:' overlays/live/infrastructure/root/local-config.sops.yaml

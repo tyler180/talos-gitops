@@ -53,12 +53,12 @@ Keep **Prune**, **Force**, and **Replace** unchecked for the first sync.
 Verify the rollout with:
 
 ```sh
-kubectl --kubeconfig /Users/tylermclean/Projects/talos-physical/kubeconfig \
+kubectl --kubeconfig "$HOME/Projects/talos-physical/kubeconfig" \
   get pods,pvc -n monitoring
 
-kubectl --kubeconfig /Users/tylermclean/Projects/talos-physical/kubeconfig \
+kubectl --kubeconfig "$HOME/Projects/talos-physical/kubeconfig" \
   get prometheus,servicemonitor,podmonitor,prometheusrule -n monitoring
 
-kubectl --kubeconfig /Users/tylermclean/Projects/talos-physical/kubeconfig \
+kubectl --kubeconfig "$HOME/Projects/talos-physical/kubeconfig" \
   get httproute -n monitoring
 ```

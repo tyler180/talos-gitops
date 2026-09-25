@@ -1,18 +1,50 @@
 # SOPS / age / KSOPS rollout
 
 The private key is outside Git at:
-`/Users/tylermclean/.config/sops/age/talos-gitops.agekey`
+`$HOME/.config/sops/age/talos-gitops.agekey`
 
 Back up this file in your password manager before relying on encrypted secrets.
 It is installed as `argocd/sops-age`, key `keys.txt`. Do not commit it.
 The public recipient in `.sops.yaml` can safely be committed.
+
+Private addresses, filesystem paths, node selectors, and cloud identifiers are
+stored in SOPS-encrypted files under `overlays/live/` or in encrypted application
+Secrets under `infrastructure/secrets/`. Public `749rmw.com` hostnames remain in
+the ordinary manifests. The public bases can be rendered without the age private
+key; Argo CD follows the live overlays to restore local-only values.
+
+Validate public examples without credentials:
+
+```sh
+kubectl kustomize applications/mm-inches
+kubectl kustomize infrastructure
+```
+
+Validate a live overlay locally without writing decrypted output to disk:
+
+```sh
+SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/talos-gitops.agekey" \
+  kustomize build --enable-alpha-plugins --enable-exec \
+  overlays/live/infrastructure/root >/dev/null
+```
+
+When migrating an existing installation, commit and push these changes before
+repointing the bootstrap Application. Apply the updated source path once, then
+review the root diff before syncing:
+
+```sh
+kubectl --kubeconfig "$HOME/Projects/talos-physical/kubeconfig" \
+  apply -f bootstrap/root-application.yaml
+```
+
+Keep Prune, Force, and Replace unchecked.
 
 1. Commit/push the repository changes and sync `root`.
 2. Sync `argocd` with Prune, Force and Replace unchecked.
 3. Wait for `argocd-repo-server` to finish rolling out:
 
 ```sh
-export KUBECONFIG=/Users/tylermclean/Projects/talos-physical/kubeconfig
+export KUBECONFIG="$HOME/Projects/talos-physical/kubeconfig"
 kubectl -n argocd rollout status deployment/argocd-repo-server
 ```
 
@@ -40,7 +72,7 @@ Restore the backed-up age key outside Git, then bootstrap the Secret before
 syncing Argo's repo-server configuration:
 
 ```sh
-kubectl --kubeconfig /Users/tylermclean/Projects/talos-physical/kubeconfig -n argocd create secret generic sops-age --from-file=keys.txt=/Users/tylermclean/.config/sops/age/talos-gitops.agekey
+kubectl --kubeconfig "$HOME/Projects/talos-physical/kubeconfig" -n argocd create secret generic sops-age --from-file=keys.txt="$HOME/.config/sops/age/talos-gitops.agekey"
 ```
 
 For local SOPS editing/decryption set `SOPS_AGE_KEY_FILE` to that private key path.

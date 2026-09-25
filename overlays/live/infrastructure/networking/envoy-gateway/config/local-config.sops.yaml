@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: envoy-gateway-local-config
+    namespace: envoy-gateway-system
+type: Opaque
+stringData:
+    load-balancer-address: ENC[AES256_GCM,data:uphw1T/lmVshIuKlRQ==,iv:HcCimkH4mSm/Ac5+FrdB2ADSKFT9jeKRta1CCXyAHkg=,tag:tg/eTosW7QuIEVHePhJUnQ==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsVzNQU3pOQVJBZG95ZGZO
+            T3p1ZHBVMTNwZERVWXVXS2dWVmxPQmFLcG1zCjk0dk9WelByV1BTRTZKWXdzOWI4
+            QmQyaWowRVFnajlrOWJ2aUtybVBwWWsKLS0tIFJ1WWZFSGFsZ0dLOFFDRFNtSTVS
+            SUJxeTQ0dzlBY1ZSQXlrZ0pPU0wrdlkKIa+ivB4CRNjLUPPPWvy/9wUqz0nxpIuo
+            4ElBZtVjy+eMse8AdUA7RPEzCe9YH8esV6E1MC1xXp3USYC/EGuiAw==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1rph9048ac53jhhqajcz78lyyqku6u95l0gu5thc70uma7n256avqpgnxcj
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-09-25T17:27:26Z"
+    mac: ENC[AES256_GCM,data:3/qX8V+TuYLZN6RiBLExz9ByPKk9zubc7oFB8cB2wl9UTr61fmhBpSt92s3wdgdMZXLDwZjGYzz6H4q919bpapGAaXLMSNGIx63syaqZ5xPwqIYuhntHIQNxL7xHf8Fxc9oBlpWM1XFd+ihgs9/vQ5RN/vUiQ077hSmQIpEdTrU=,iv:Qmm7bcEoUb5jQlU7zsO83Xep8Qcx1hxGACCvBcc4i/w=,tag:iiOEA32QGi5UIm+j8Nub7A==,type:str]
+    version: 3.13.3

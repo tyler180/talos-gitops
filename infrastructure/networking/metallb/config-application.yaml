@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: git@github.com:tyler180/talos-gitops.git
     targetRevision: main
-    path: infrastructure/networking/metallb/config
+    path: overlays/live/infrastructure/networking/metallb/config
   destination:
     server: https://kubernetes.default.svc
     namespace: metallb-system
