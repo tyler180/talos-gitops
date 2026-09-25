@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: git@github.com:tyler180/talos-gitops.git
     targetRevision: main
-    path: infrastructure/cert-manager/config
+    path: overlays/live/infrastructure/cert-manager/config
   destination:
     server: https://kubernetes.default.svc
     namespace: envoy-gateway-system

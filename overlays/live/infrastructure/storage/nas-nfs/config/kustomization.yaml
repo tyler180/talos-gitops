@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../../../../infrastructure/storage/nas-nfs
+generators:
+  - local-config-generator.yaml
+replacements:
+  - source:
+      kind: Secret
+      name: nas-nfs-local-config
+      fieldPath: stringData.server
+    targets:
+      - select:
+          kind: StorageClass
+          name: nas-nfs
+        fieldPaths:
+          - parameters.server
+  - source:
+      kind: Secret
+      name: nas-nfs-local-config
+      fieldPath: stringData.share
+    targets:
+      - select:
+          kind: StorageClass
+          name: nas-nfs
+        fieldPaths:
+          - parameters.share

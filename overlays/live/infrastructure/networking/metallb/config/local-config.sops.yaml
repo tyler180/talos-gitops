@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: metallb-local-config
+    namespace: metallb-system
+type: Opaque
+stringData:
+    address-pool: ENC[AES256_GCM,data:27LNHUvmRXwIazTPKAuratvyDTF4E6xZajai,iv:YpNynCPoIwnYWklGq5EhdlRr49Tqkvkx2gzf6Qy8Puk=,tag:C0SQcmry9d2/pJa48vb1Ow==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBRWGlRckd2N3graUpqNENw
+            NEdHVDVZV1ZUTU1FT3B0eHNMOS9HMnB1WVFrClFWd29mdzdyUVppQkZLcTFFYnpK
+            bVJGc2xPTUZyNGRZT2VaZ2VxUU9KWGMKLS0tIGI1QmZVSS9XZjdyMXdlU1lwMDFt
+            TkJoeXMrVEdPRWVld3FkY1VlR3VsSmsKDYKaTMFGbcdRpEp/l/tDHBIreOa4GA3l
+            meqwIYTSE3BjG5QtJQiK5WqrzkIIHtfvIidXewFU7VSs53ROkTPX0Q==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1rph9048ac53jhhqajcz78lyyqku6u95l0gu5thc70uma7n256avqpgnxcj
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-09-25T16:57:04Z"
+    mac: ENC[AES256_GCM,data:VG9fCc8fC0ZqlzOtJWRYo3Mk/PUbCKWNCPKv+Ogl2orY+LqreYVROA+qKkgOwUC02BwWghAkFEVaUG8DaAtnpVBt4/aFx1L6wQE7ufDbwsCUMOHhfzbGq85s2ppKI5Z1+UEXm2ySM5WEo+Afr63iim3d+jlxiAWpRlMZXXwBv/w=,iv:uSCC48VrBmZGHPW5ifCzaUclFfZL3kThTYhI2uSqops=,tag:QvfYthuBGHZsIoIi3Fi/NQ==,type:str]
+    version: 3.13.3

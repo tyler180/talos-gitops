@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../../../../infrastructure/networking/metallb/config
+generators:
+  - local-config-generator.yaml
+replacements:
+  - source:
+      kind: Secret
+      name: metallb-local-config
+      fieldPath: stringData.address-pool
+    targets:
+      - select:
+          kind: IPAddressPool
+          name: ten-gig
+        fieldPaths:
+          - spec.addresses.0

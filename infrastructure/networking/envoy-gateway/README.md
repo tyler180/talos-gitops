@@ -5,7 +5,8 @@
 Both Applications are listed in the infrastructure root Kustomization.
 
 The `eg` GatewayClass uses the default Envoy proxy configuration. The `public`
-Gateway requests `192.168.3.240` from MetalLB and listens on HTTP port 80 for
+Gateway address is supplied by the SOPS-encrypted local configuration. The
+checked-in example address is `192.0.2.10`; the public hostname is
 `*.k8s.749rmw.com`. Routes from other namespaces may attach to this Gateway;
 keep each HTTPRoute with its application and explicitly reference the Gateway
 in namespace `envoy-gateway-system`.
@@ -14,14 +15,14 @@ in namespace `envoy-gateway-system`.
 
 After merging the files, sync `root`, then `envoy-gateway-config`.
 Verify the GatewayClass is Accepted, the Gateway is Programmed, and the proxy
-LoadBalancer Service receives `192.168.3.240`. No HTTPRoutes are included here,
+LoadBalancer Service receives the configured address. No HTTPRoutes are included here,
 so application responses are not expected until a route and backend are added.
 
 ## Enable HTTPS
 
 HTTPS is intentionally deferred during initial connectivity validation. Before
 adding a port 443 HTTPS listener, provision a trusted wildcard certificate for
-`*.k8s.749rmw.com` into the `wildcard-k8s-749rmw-com-tls` Secret in namespace
+the configured wildcard domain into the `wildcard-k8s-749rmw-com-tls` Secret in namespace
 `envoy-gateway-system`. Do not commit certificate private keys to Git.
 
 Then add an HTTPS listener using TLS termination and a certificate reference to

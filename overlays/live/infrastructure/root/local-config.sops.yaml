@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: infrastructure-local-config
+    namespace: argocd
+type: Opaque
+stringData:
+    node-address-cidr: ENC[AES256_GCM,data:tJrXopKmO85f/S/i/ek=,iv:pbRvRDQejb7WWzZKXV0jQbf/NYegjWTAoh0rxAEQKPU=,tag:JyxCZ0vGGDDPj+HYd75l4Q==,type:str]
+    node-name-regex: ENC[AES256_GCM,data:hy1TK5gdM6eczA==,iv:WpndRFPxl0wOekTA2Bqhm8wYm+Do0sbzdTUQagiTFsc=,tag:6lg/8J9H0l1tf5drKW9A4A==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBmdFpOSTN1MDB6enJpQVZo
+            VFhKUytYYWZNQTQ1R0gyL09LWi96L1BrK25JCmhkZTZDTkk2UlMzaDBzS0VGcDg1
+            NDErQ0NPYzJWU0k4Ym9hcnVIdVZsZG8KLS0tIDIrU2pJaGFxQmhGNlQrODFOTVNX
+            TWN3WGdZM0ZDOE96WFRxY1Y5NGNad1EK9wd4ij/qjY7ge/t9PNGZsafOqb0tcWEY
+            7AhaeaGcGPXCTN+3zqGhxfbaJsEj/NdjsIJDPkqfD7Ev/JIZXcA1Cg==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1rph9048ac53jhhqajcz78lyyqku6u95l0gu5thc70uma7n256avqpgnxcj
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-09-25T17:27:26Z"
+    mac: ENC[AES256_GCM,data:3FRbBtm4uzjiq7Ibt/OGq5o33FX8QOCraJoTYZV+62DQWwICTmnmZLcXseOJfYau+KTrheP/cL28Evo164tPgTrWz/LDG6nGVkPH1MauDRXmnS2zAOZLncEnR8BGAzZ1QGN+TL5X08iB1p6rfh765/U5t28UhxEcDBH+Udj65/s=,iv:4b0izHn3WvX8jpY9ISWtYXNAsUc5H7/sBkakDRmYnxE=,tag:50gn59EsPMqoYe3g/Pr8SA==,type:str]
+    version: 3.13.3

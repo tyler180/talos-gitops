@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: git@github.com:tyler180/talos-gitops.git
     targetRevision: main
-    path: infrastructure/storage/nas-nfs
+    path: overlays/live/infrastructure/storage/nas-nfs/config
   destination:
     server: https://kubernetes.default.svc
     namespace: default

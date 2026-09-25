@@ -12,9 +12,9 @@ spec:
     helm:
       releaseName: kubelet-csr-approver
       valuesObject:
-        providerRegex: '^cp0[1-3]$'
+        providerRegex: '^node-[0-9]+$'
         providerIpPrefixes:
-          - 192.168.3.0/24
+          - 192.0.2.0/24
         bypassDnsResolution: true
         skipDenyStep: true
   destination:

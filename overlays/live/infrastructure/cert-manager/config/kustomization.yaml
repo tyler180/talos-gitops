@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../../../infrastructure/cert-manager/config
+generators:
+  - local-config-generator.yaml
+replacements:
+  - source:
+      kind: Secret
+      name: cert-manager-local-config
+      fieldPath: stringData.hosted-zone-id
+    targets:
+      - select:
+          kind: ClusterIssuer
+          name: letsencrypt-route53
+        fieldPaths:
+          - spec.acme.solvers.0.dns01.route53.hostedZoneID
