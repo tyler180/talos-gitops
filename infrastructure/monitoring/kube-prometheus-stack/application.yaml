@@ -30,6 +30,8 @@ spec:
             userKey: admin-user
             passwordKey: admin-password
           defaultDashboardsTimezone: browser
+          initChownData:
+            enabled: false
           grafana.ini:
             analytics:
               check_for_updates: false

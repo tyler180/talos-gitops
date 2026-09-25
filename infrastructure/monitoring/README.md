@@ -12,6 +12,8 @@ sops --decrypt infrastructure/secrets/grafana-admin.sops.yaml
 
 Grafana uses a 5 GiB `nas-nfs` PVC so saved dashboards and settings survive pod replacement.
 
+The Grafana chart's `initChownData` container is disabled because Synology NFS root-squash rejects its recursive `chown`. The dynamically provisioned NFS directory remains writable by Grafana's non-root UID/GID.
+
 Prometheus intentionally does not use `nas-nfs`. Prometheus does not support NFS for its local TSDB because it can corrupt the database. Until a local block-backed StorageClass is available, Prometheus uses a 20 GiB `emptyDir`, retains at most 15 days or 16 GB, and loses historical metrics when its pod is rescheduled or replaced. The monitoring configuration, dashboards, and alerts remain reproducible through GitOps.
 
 When local persistent storage is available, replace `prometheus.prometheusSpec.storageSpec.emptyDir` with a `volumeClaimTemplate` that uses that StorageClass.
@@ -19,6 +21,8 @@ When local persistent storage is available, replace `prometheus.prometheusSpec.s
 ## Talos control-plane metrics
 
 The kube-controller-manager, kube-scheduler, etcd, and kube-proxy monitors and their matching rules are disabled. Their metrics ports are not reachable from the pod network with the current Talos configuration. Kubelet, cAdvisor, API server, node-exporter, kube-state-metrics, Prometheus, and Grafana monitoring remain enabled.
+
+The `monitoring` namespace uses the privileged Pod Security profile because node-exporter needs host network, host PID, hostPath, and host port access to collect node metrics. Other monitoring workloads retain their chart-defined non-root container security contexts.
 
 ## First sync
 
