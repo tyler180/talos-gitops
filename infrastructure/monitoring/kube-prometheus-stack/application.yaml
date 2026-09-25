@@ -30,12 +30,26 @@ spec:
             userKey: admin-user
             passwordKey: admin-password
           defaultDashboardsTimezone: browser
+          envFromSecret: grafana-oauth
           initChownData:
             enabled: false
           grafana.ini:
             analytics:
               check_for_updates: false
               reporting_enabled: false
+            auth:
+              oauth_auto_login: false
+              signout_redirect_url: https://auth.k8s.749rmw.com/application/o/grafana/end-session/
+            auth.generic_oauth:
+              allow_sign_up: true
+              api_url: https://auth.k8s.749rmw.com/application/o/userinfo/
+              auth_url: https://auth.k8s.749rmw.com/application/o/authorize/
+              enabled: true
+              name: authentik
+              role_attribute_path: "contains(entitlements[*], 'Grafana Admins') && 'Admin' || contains(entitlements[*], 'Grafana Editors') && 'Editor' || 'Viewer'"
+              scopes: openid profile email entitlements offline_access
+              token_url: https://auth.k8s.749rmw.com/application/o/token/
+              use_refresh_token: true
             security:
               cookie_secure: true
             server:

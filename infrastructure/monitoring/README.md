@@ -8,6 +8,23 @@ Grafana is available at `https://grafana.k8s.749rmw.com`. Its admin credential i
 sops --decrypt infrastructure/secrets/grafana-admin.sops.yaml
 ```
 
+## Authentication
+
+Grafana uses authentik as its OpenID Connect provider. The OAuth client ID and
+secret are stored in the SOPS-encrypted
+`infrastructure/secrets/grafana-oauth.sops.yaml` Secret and injected into the
+Grafana container as environment variables so they are not rendered into a
+ConfigMap.
+
+The authentik application entitlements map to Grafana organization roles:
+
+- `Grafana Admins` becomes `Admin`.
+- `Grafana Editors` becomes `Editor`.
+- Users without either entitlement become `Viewer`.
+
+The local Grafana login form remains enabled as a recovery path. The local
+admin credential above is not replaced by OAuth.
+
 ## Storage
 
 Grafana uses a 5 GiB `nas-nfs` PVC so saved dashboards and settings survive pod replacement.
