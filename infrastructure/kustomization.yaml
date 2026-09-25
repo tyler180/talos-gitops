@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - monitoring/namespace.yaml
   - argocd/application.yaml
   - storage/nfs-csi/application.yaml
   - storage/nas-nfs/application.yaml
@@ -18,3 +19,5 @@ resources:
   - secrets/application.yaml
   - monitoring/metrics-server/application.yaml
   - monitoring/kubelet-csr-approver/application.yaml
+  - monitoring/kube-prometheus-stack/application.yaml
+  - monitoring/grafana-config-application.yaml

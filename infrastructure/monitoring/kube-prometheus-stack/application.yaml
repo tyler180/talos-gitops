@@ -1,0 +1,109 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: "91.5.1"
+    helm:
+      releaseName: kube-prometheus-stack
+      valuesObject:
+        alertmanager:
+          enabled: false
+
+        defaultRules:
+          rules:
+            alertmanager: false
+            etcd: false
+            kubeControllerManager: false
+            kubeProxy: false
+            kubeSchedulerAlerting: false
+            kubeSchedulerRecording: false
+
+        grafana:
+          admin:
+            existingSecret: grafana-admin
+            userKey: admin-user
+            passwordKey: admin-password
+          defaultDashboardsTimezone: browser
+          grafana.ini:
+            analytics:
+              check_for_updates: false
+              reporting_enabled: false
+            security:
+              cookie_secure: true
+            server:
+              domain: grafana.k8s.749rmw.com
+              enable_gzip: true
+              root_url: https://grafana.k8s.749rmw.com
+            users:
+              allow_sign_up: false
+          persistence:
+            enabled: true
+            type: sts
+            storageClassName: nas-nfs
+            accessModes:
+              - ReadWriteOnce
+            size: 5Gi
+            finalizers:
+              - kubernetes.io/pvc-protection
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+
+        kubeControllerManager:
+          enabled: false
+
+        kubeEtcd:
+          enabled: false
+
+        kubeProxy:
+          enabled: false
+
+        kubeScheduler:
+          enabled: false
+
+        prometheus:
+          prometheusSpec:
+            enableAdminAPI: false
+            evaluationInterval: 30s
+            externalLabels:
+              cluster: talos-physical
+            podMonitorSelector: {}
+            podMonitorSelectorNilUsesHelmValues: false
+            probeSelector: {}
+            probeSelectorNilUsesHelmValues: false
+            replicas: 1
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                memory: 3Gi
+            retention: 15d
+            retentionSize: 16GB
+            ruleSelector: {}
+            ruleSelectorNilUsesHelmValues: false
+            scrapeConfigSelector: {}
+            scrapeConfigSelectorNilUsesHelmValues: false
+            scrapeInterval: 30s
+            serviceMonitorSelector: {}
+            serviceMonitorSelectorNilUsesHelmValues: false
+            storageSpec:
+              emptyDir:
+                sizeLimit: 20Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true
