@@ -4,3 +4,6 @@ namespace: jobtracker
 resources:
   - namespace.yaml
   - deployment.yaml
+  - service.yaml
+  - httproute.yaml
+  - http-redirect.yaml
