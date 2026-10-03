@@ -21,3 +21,5 @@ resources:
   - monitoring/kubelet-csr-approver/application.yaml
   - monitoring/kube-prometheus-stack/application.yaml
   - monitoring/grafana-config-application.yaml
+
+  - applications/jobtracker.yaml
