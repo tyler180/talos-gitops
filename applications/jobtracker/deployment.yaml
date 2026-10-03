@@ -42,7 +42,7 @@ spec:
           containerPort: 8081
         env:
         - name: LISTEN_ADDR
-          value: :8080
+          value: :8081
         - name: DATA_DIR
           value: /data
         volumeMounts:
