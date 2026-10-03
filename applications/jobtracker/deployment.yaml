@@ -39,7 +39,7 @@ spec:
         image: ghcr.io/tyler180/jobtracker:v0.1.1@sha256:a0962ca5a98a8fd10d92abf9bf06580579ea6961b6666889f64e4e08dd9851a6
         ports:
         - name: http
-          containerPort: 8080
+          containerPort: 8081
         env:
         - name: LISTEN_ADDR
           value: :8080
