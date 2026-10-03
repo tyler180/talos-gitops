@@ -1,0 +1,73 @@
+name: Validate Jobtracker GitOps
+on:
+  pull_request:
+    paths:
+      - applications/jobtracker/**
+      - infrastructure/applications/jobtracker.yaml
+      - infrastructure/kustomization.yaml
+      - .github/workflows/validate-jobtracker.yaml
+      - automation/**
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    name: Jobtracker GitOps validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install manifest tools
+        env:
+          KUBECTL_VERSION: v1.35.0
+          KUBECTL_SHA256: a2e984a18a0c063279d692533031c1eff93a262afcc0afdc517375432d060989
+        run: |
+          python3 -m venv "$RUNNER_TEMP/manifest-tools"
+          "$RUNNER_TEMP/manifest-tools/bin/pip" install PyYAML==6.0.3
+          echo "$RUNNER_TEMP/manifest-tools/bin" >> "$GITHUB_PATH"
+          curl --fail --silent --show-error --location -o "$RUNNER_TEMP/kubectl" \
+            "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          echo "$KUBECTL_SHA256  $RUNNER_TEMP/kubectl" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/kubectl-bin"
+          install -m 0755 "$RUNNER_TEMP/kubectl" "$RUNNER_TEMP/kubectl-bin/kubectl"
+          echo "$RUNNER_TEMP/kubectl-bin" >> "$GITHUB_PATH"
+      - name: Test image-only promotion policy
+        run: python -m unittest discover -s automation/tests -v
+      - name: Validate bot promotion against trusted base policy
+        if: github.event.pull_request.head.ref == 'automation/jobtracker'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git show "$BASE_SHA:automation/validate_jobtracker_promotion.py" > "$RUNNER_TEMP/validate-promotion.py"
+          python "$RUNNER_TEMP/validate-promotion.py" --base "$BASE_SHA" --head "$HEAD_SHA"
+      - name: Render Jobtracker and infrastructure
+        run: |
+          kubectl kustomize applications/jobtracker > "$RUNNER_TEMP/jobtracker.yaml"
+          kubectl kustomize infrastructure > "$RUNNER_TEMP/infrastructure.yaml"
+  merge-promotion:
+    name: Merge validated Jobtracker release
+    needs: validate
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.ref == 'automation/jobtracker' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == 'tyler180-gitops-bot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge exactly the validated commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: gh pr merge "$PR_NUMBER" --repo "$REPOSITORY" --squash --match-head-commit "$HEAD_SHA"
