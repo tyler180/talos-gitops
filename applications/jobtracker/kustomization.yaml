@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: jobtracker
 resources:
   - namespace.yaml
-  - app.yaml
+  - deployment.yaml
