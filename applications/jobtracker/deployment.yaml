@@ -36,7 +36,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: jobtracker
-        image: ghcr.io/tyler180/jobtracker:v0.2.15@sha256:3737263a619498d8d9ca93d4a5cb202149853ddda3273c3a8b96e592f4cec4e8
+        image: ghcr.io/tyler180/jobtracker:v0.2.16@sha256:4c08c7f3de6a383ddbee55002e89ca1554b02863a0c217bb6845d5a0e669aca9
         ports:
         - name: http
           containerPort: 8080
