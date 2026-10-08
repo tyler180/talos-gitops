@@ -22,3 +22,4 @@ resources:
   - monitoring/kube-prometheus-stack/application.yaml
   - monitoring/grafana-config-application.yaml
   - applications/jobtracker.yaml
+  - applications/jobtracker-demo.yaml
