@@ -3,7 +3,9 @@ on:
   pull_request:
     paths:
       - applications/jobtracker/**
+      - applications/jobtracker-demo/**
       - infrastructure/applications/jobtracker.yaml
+      - infrastructure/applications/jobtracker-demo.yaml
       - infrastructure/kustomization.yaml
       - .github/workflows/validate-jobtracker.yaml
       - automation/**
@@ -48,6 +50,7 @@ jobs:
       - name: Render Jobtracker and infrastructure
         run: |
           kubectl kustomize applications/jobtracker > "$RUNNER_TEMP/jobtracker.yaml"
+          kubectl kustomize applications/jobtracker-demo > "$RUNNER_TEMP/jobtracker-demo.yaml"
           kubectl kustomize infrastructure > "$RUNNER_TEMP/infrastructure.yaml"
   merge-promotion:
     name: Merge validated Jobtracker release
