@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: url-shortener-data
+  namespace: url-shortener
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: nas-nfs
+  resources:
+    requests:
+      storage: 10Gi

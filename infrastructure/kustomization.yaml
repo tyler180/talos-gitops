@@ -23,3 +23,4 @@ resources:
   - monitoring/grafana-config-application.yaml
   - applications/jobtracker.yaml
   - applications/jobtracker-demo.yaml
+  - applications/url-shortener.yaml
