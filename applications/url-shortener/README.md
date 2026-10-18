@@ -8,7 +8,7 @@ One replica uses a 10 GiB `nas-nfs` volume at `/videos`, with a Recreate strateg
 
 `url-shortener-auth` is encrypted under `infrastructure/secrets/`. Its `token` key supplies the shared token required by the `/upload` API. The application does not authenticate `/import` or `/upload/local`; the token is not a site login.
 
-The image is built from source commit `072b0f862cbbd21da0588d046fe971f38c0397ce` using `server/Dockerfile` for linux/amd64 and pinned by digest. The app repository's current release workflow targets a different source layout and needs repair before future automated releases can work. Publish and verify a new image, then update `deployment.yaml` through a reviewed GitOps PR.
+The image is built from source commit `2f31615d3578cdaaa63624984300bf03b7a55e4b` using `server/Dockerfile` for linux/amd64 and pinned by digest. The app repository's current release workflow targets a different source layout and needs repair before future automated releases can work. Publish and verify a new image, then update `deployment.yaml` through a reviewed GitOps PR.
 
 Validation:
 
@@ -18,3 +18,5 @@ kubectl kustomize infrastructure
 ```
 
 Argo CD automatically syncs this application without pruning. Root and cluster-secrets retain their existing manual sync policies. Roll back by restoring the previous image digest in Git; the PVC remains intact.
+
+Reddit may block anonymous post metadata with HTTP 403. Direct `https://v.redd.it/<video-id>` links import the public DASH manifest with video and audio. Authenticated post imports are supported with `-reddit-cookies`, but no Reddit session is configured in this deployment. Obtain explicit consent before copying a browser session into the cluster; store an approved session only in a SOPS-encrypted Secret and mount it read-only.
