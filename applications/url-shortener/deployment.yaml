@@ -31,6 +31,7 @@ spec:
             - -storage=/videos
             - -base-url=https://url-shortener.k8s.749rmw.com
             - -auth-token=$(AUTH_TOKEN)
+            - -reddit-cookies=/run/secrets/reddit/cookies.txt
           env:
             - name: AUTH_TOKEN
               valueFrom:
@@ -64,11 +65,18 @@ spec:
             capabilities:
               drop: [ALL]
           volumeMounts:
+            - name: reddit-session
+              mountPath: /run/secrets/reddit
+              readOnly: true
             - name: videos
               mountPath: /videos
             - name: tmp
               mountPath: /tmp
       volumes:
+        - name: reddit-session
+          secret:
+            secretName: url-shortener-reddit-session
+            defaultMode: 0440
         - name: videos
           persistentVolumeClaim:
             claimName: url-shortener-data
