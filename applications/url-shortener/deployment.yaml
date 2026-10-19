@@ -29,7 +29,7 @@ spec:
           args:
             - -listen=:8080
             - -storage=/videos
-            - -base-url=https://url-shortener.k8s.749rmw.com
+            - -base-url=https://vid.749rmw.com
             - -auth-token=$(AUTH_TOKEN)
             - -reddit-cookies=/run/secrets/reddit/cookies.txt
           env:
