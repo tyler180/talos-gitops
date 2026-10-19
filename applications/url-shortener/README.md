@@ -2,7 +2,7 @@
 
 Deploys `tyler180/url-shortener` (the current source implements a video host and importer).
 
-Open https://url-shortener.k8s.749rmw.com/import to import a video, or `/upload/local` to upload through the browser. Generated links use this HTTPS hostname. This is a new installation; existing local videos and Twitter cookies are not migrated.
+Open https://vid.749rmw.com/import to import a video, or `/upload/local` to upload through the browser. Generated links use this HTTPS hostname. This is a new installation; existing local videos and Twitter cookies are not migrated.
 
 One replica uses a 10 GiB `nas-nfs` volume at `/videos`, with a Recreate strategy to avoid overlapping cleanup jobs. The app's default retention deletes videos after 30 days. NFS capacity requests do not necessarily enforce a NAS quota.
 
@@ -20,3 +20,5 @@ kubectl kustomize infrastructure
 Argo CD automatically syncs this application without pruning. Root and cluster-secrets retain their existing manual sync policies. Roll back by restoring the previous image digest in Git; the PVC remains intact.
 
 Reddit may block anonymous post metadata with HTTP 403. Direct `https://v.redd.it/<video-id>` links import the public DASH manifest with video and audio. Authenticated post imports are supported with `-reddit-cookies`, and the user-approved Reddit session is stored as a SOPS-encrypted Secret mounted read-only at `/run/secrets/reddit/cookies.txt`. The app uses a private temporary copy for each import. If the session expires or is revoked, replace the encrypted cookie file and reconcile `cluster-secrets`; the mounted Secret updates without rebuilding the image. To revoke app access, remove the cookie argument, mount, volume, and encrypted Secret through GitOps, then sign out the exported Reddit session in Reddit account settings.
+
+The canonical hostname is `vid.749rmw.com`, with a dedicated Gateway listener and cert-manager certificate. The previous `url-shortener.k8s.749rmw.com` routes remain available so existing video links continue working. Its authoritative Route 53 A record targets the existing Gateway address.

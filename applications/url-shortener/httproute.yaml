@@ -8,7 +8,11 @@ spec:
     - name: public
       namespace: envoy-gateway-system
       sectionName: https
+    - name: public
+      namespace: envoy-gateway-system
+      sectionName: vid-https
   hostnames:
+    - vid.749rmw.com
     - url-shortener.k8s.749rmw.com
   rules:
     - matches:

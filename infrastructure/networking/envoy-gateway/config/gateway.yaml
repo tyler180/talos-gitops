@@ -31,3 +31,23 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: vid-http
+      protocol: HTTP
+      port: 80
+      hostname: vid.749rmw.com
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: vid-https
+      protocol: HTTPS
+      port: 443
+      hostname: vid.749rmw.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: vid-749rmw-com-tls
+      allowedRoutes:
+        namespaces:
+          from: All

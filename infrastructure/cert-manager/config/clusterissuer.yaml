@@ -12,6 +12,7 @@ spec:
       - selector:
           dnsZones:
             - k8s.749rmw.com
+            - vid.749rmw.com
         dns01:
           route53:
             region: us-west-2

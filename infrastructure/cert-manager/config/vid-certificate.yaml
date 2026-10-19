@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vid-749rmw-com
+  namespace: envoy-gateway-system
+spec:
+  secretName: vid-749rmw-com-tls
+  issuerRef:
+    name: letsencrypt-route53
+    kind: ClusterIssuer
+  dnsNames:
+    - vid.749rmw.com
