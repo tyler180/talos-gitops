@@ -71,6 +71,10 @@ spec:
             enabled: false
 
         server:
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
           replicas: 1
           containerSecurityContext:
             runAsNonRoot: true
@@ -88,6 +92,10 @@ spec:
               memory: 1Gi
 
         worker:
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
           replicas: 1
           containerSecurityContext:
             runAsNonRoot: true

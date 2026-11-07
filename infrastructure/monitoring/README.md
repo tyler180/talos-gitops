@@ -25,6 +25,29 @@ The authentik application entitlements map to Grafana organization roles:
 The local Grafana login form remains enabled as a recovery path. The local
 admin credential above is not replaced by OAuth.
 
+## Alerting and platform metrics
+
+Alertmanager is enabled and connected to Prometheus. The chart's default `null`
+receiver deliberately sends no external notifications until a destination is
+chosen. Alerts can be inspected through Grafana's Alertmanager data source.
+The always-firing Watchdog is expected; it does not yet verify external delivery.
+Alertmanager currently uses ephemeral storage, so silences and notification
+history do not survive pod replacement.
+
+Argo CD controller, API server, repository server, ApplicationSet controller,
+and notifications controller expose internal metrics Services and ServiceMonitors.
+Authentik server and worker expose their internal metrics the same way.
+The `Platform / Argo CD and Authentik` dashboard is provisioned from
+`applications/grafana/platform-dashboard.yaml` and uses the `prometheus` data source.
+Platform rules report sustained unhealthy/out-of-sync Argo applications and
+missing controller/authentik scrape targets; the stack's TargetDown rules cover
+discovered targets whose scrapes fail.
+
+Next steps: select an external notification receiver, provide local block-backed
+storage for Prometheus, and design centralized log collection and retention.
+Loki, log collectors, tracing, and application request instrumentation are not
+installed by this change.
+
 ## Storage
 
 Grafana uses a 5 GiB `nas-nfs` PVC so saved dashboards and settings survive pod replacement.

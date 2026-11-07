@@ -12,6 +12,26 @@ spec:
     helm:
       releaseName: argocd
       valuesObject:
+        controller:
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+        server:
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+        applicationSet:
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+        notifications:
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
         configs:
           cm:
             url: https://argocd.k8s.749rmw.com
@@ -19,6 +39,10 @@ spec:
           params:
             server.insecure: true
         repoServer:
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
           env:
             - name: SOPS_AGE_KEY_FILE
               value: /sops-age/keys.txt

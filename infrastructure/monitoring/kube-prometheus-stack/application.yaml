@@ -13,16 +13,73 @@ spec:
       releaseName: kube-prometheus-stack
       valuesObject:
         alertmanager:
-          enabled: false
+          enabled: true
+          # Keep alerts visible locally; add a notification receiver separately.
+          alertmanagerSpec:
+            retention: 120h
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
 
         defaultRules:
           rules:
-            alertmanager: false
+            alertmanager: true
             etcd: false
             kubeControllerManager: false
             kubeProxy: false
             kubeSchedulerAlerting: false
             kubeSchedulerRecording: false
+
+        additionalPrometheusRulesMap:
+          platform-health:
+            groups:
+              - name: platform.gitops
+                rules:
+                  - alert: ArgoApplicationUnhealthy
+                    expr: argocd_app_info{health_status!~"Healthy|Progressing|Suspended"} == 1
+                    for: 10m
+                    labels:
+                      severity: warning
+                    annotations:
+                      summary: 'Argo CD application {{ $labels.name }} is unhealthy'
+                      description: 'Application health has been {{ $labels.health_status }} for 10 minutes. Inspect its resources in Argo CD.'
+                  - alert: ArgoApplicationOutOfSync
+                    expr: argocd_app_info{sync_status="OutOfSync"} == 1
+                    for: 30m
+                    labels:
+                      severity: warning
+                    annotations:
+                      summary: 'Argo CD application {{ $labels.name }} is out of sync'
+                      description: 'The application has differed from its desired state for 30 minutes. Review its diff before syncing.'
+                  - alert: ArgoControllerMetricsMissing
+                    expr: absent(up{namespace="argocd",service="argocd-application-controller-metrics"})
+                    for: 10m
+                    labels:
+                      severity: warning
+                    annotations:
+                      summary: Argo CD controller metrics are missing
+                      description: Check the controller metrics Service, ServiceMonitor, and Prometheus discovery.
+              - name: platform.identity
+                rules:
+                  - alert: AuthentikServerMetricsMissing
+                    expr: absent(up{namespace="authentik",service="authentik-server-metrics"})
+                    for: 10m
+                    labels:
+                      severity: warning
+                    annotations:
+                      summary: Authentik server metrics are missing
+                      description: Check the authentik server metrics Service and ServiceMonitor.
+                  - alert: AuthentikWorkerMetricsMissing
+                    expr: absent(up{namespace="authentik",service="authentik-worker-metrics"})
+                    for: 10m
+                    labels:
+                      severity: warning
+                    annotations:
+                      summary: Authentik worker metrics are missing
+                      description: Check the authentik worker metrics Service and ServiceMonitor.
 
         grafana:
           admin:
