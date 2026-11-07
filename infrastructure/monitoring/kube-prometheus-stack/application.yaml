@@ -170,8 +170,14 @@ spec:
             serviceMonitorSelector: {}
             serviceMonitorSelectorNilUsesHelmValues: false
             storageSpec:
-              emptyDir:
-                sizeLimit: 20Gi
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: monitoring-local
+                  accessModes:
+                    - ReadWriteOnce
+                  resources:
+                    requests:
+                      storage: 30Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

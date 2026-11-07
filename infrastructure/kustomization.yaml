@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - monitoring/namespace.yaml
+  - monitoring/local-storage/storageclass.yaml
+  - monitoring/local-storage/prometheus-pv.yaml
   - argocd/application.yaml
   - storage/nfs-csi/application.yaml
   - storage/nas-nfs/application.yaml
