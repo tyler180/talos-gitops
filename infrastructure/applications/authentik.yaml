@@ -40,6 +40,10 @@ spec:
             secretKeys:
               userPasswordKey: AUTHENTIK_POSTGRESQL__PASSWORD
           primary:
+            updateStrategy:
+              type: RollingUpdate
+              rollingUpdate:
+                partition: 0
             podSecurityContext:
               enabled: true
               fsGroup: 100
