@@ -26,3 +26,4 @@ resources:
   - applications/jobtracker.yaml
   - applications/jobtracker-demo.yaml
   - applications/url-shortener.yaml
+  - applications/mail.yaml
