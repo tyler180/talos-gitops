@@ -28,6 +28,8 @@ spec:
           image: stalwartlabs/stalwart:v1.0.3
           imagePullPolicy: IfNotPresent
           env:
+            - name: STALWART_PUBLIC_URL
+              value: https://mail-admin.k8s.749rmw.com
             - name: STALWART_RECOVERY_ADMIN
               valueFrom:
                 secretKeyRef:
