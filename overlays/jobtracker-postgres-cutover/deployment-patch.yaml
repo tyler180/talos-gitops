@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobtracker
+spec:
+  template:
+    spec:
+      containers:
+        - name: jobtracker
+          envFrom:
+            - secretRef:
+                name: jobtracker-config
+          volumeMounts:
+            - name: postgres-ca
+              mountPath: /etc/jobtracker/postgres-ca
+              readOnly: true
+      volumes:
+        - name: postgres-ca
+          secret:
+            secretName: jobtracker-postgres-ca

@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: git@github.com:tyler180/talos-gitops.git
     targetRevision: main
-    path: applications/jobtracker
+    path: overlays/jobtracker-postgres-cutover
   destination:
     server: https://kubernetes.default.svc
     namespace: jobtracker
