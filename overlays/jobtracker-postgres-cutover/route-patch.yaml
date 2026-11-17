@@ -1,0 +1,25 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: jobtracker
+  namespace: jobtracker
+spec:
+  rules:
+    - matches:
+        - headers:
+            - name: X-Forwarded-Host
+              value: jobtracker.749rmw.com
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            hostname: jobtracker.749rmw.com
+      backendRefs:
+        - name: jobtracker
+          port: 80
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: jobtracker.749rmw.com
+            port: 443
+            statusCode: 302
