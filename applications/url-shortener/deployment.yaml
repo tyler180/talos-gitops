@@ -30,14 +30,25 @@ spec:
             - -listen=:8080
             - -storage=/videos
             - -base-url=https://vid.749rmw.com
-            - -auth-token=$(AUTH_TOKEN)
+            - -oidc-issuer=https://auth.k8s.749rmw.com/application/o/videohost/
+            - -oidc-client-id=$(OIDC_CLIENT_ID)
             - -reddit-cookies=/run/secrets/reddit/cookies.txt
           env:
-            - name: AUTH_TOKEN
+            - name: OIDC_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: url-shortener-auth
-                  key: token
+                  name: url-shortener-oidc
+                  key: client-id
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: url-shortener-oidc
+                  key: client-secret
+            - name: SESSION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: url-shortener-oidc
+                  key: session-key
             - name: HOME
               value: /tmp
           ports:
@@ -45,11 +56,11 @@ spec:
               containerPort: 8080
           readinessProbe:
             httpGet:
-              path: /import
+              path: /healthz
               port: http
           livenessProbe:
             httpGet:
-              path: /import
+              path: /healthz
               port: http
             initialDelaySeconds: 10
           resources:

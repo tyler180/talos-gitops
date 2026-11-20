@@ -2,11 +2,13 @@
 
 Deploys `tyler180/url-shortener` (the current source implements a video host and importer).
 
-Open https://vid.749rmw.com/import to import a video, or `/upload/local` to upload through the browser. Generated links use this HTTPS hostname. This is a new installation; existing local videos and Twitter cookies are not migrated.
+Open https://vid.749rmw.com/import (sign in when prompted) to import a video, or `/upload/local` to upload through the browser. Generated links use this HTTPS hostname. This is a new installation; existing local videos and Twitter cookies are not migrated.
 
 One replica uses a 10 GiB `nas-nfs` volume at `/videos`, with a Recreate strategy to avoid overlapping cleanup jobs. The app's default retention deletes videos after 30 days. NFS capacity requests do not necessarily enforce a NAS quota.
 
-`url-shortener-auth` is encrypted under `infrastructure/secrets/`. Its `token` key supplies the shared token required by the `/upload` API. The application does not authenticate `/import` or `/upload/local`; the token is not a site login.
+Importing and uploading require an Authentik login; watching shared videos (`/watch/`, `/v/`) does not. Any Authentik user can sign in. The Authentik application `videohost` uses a confidential OAuth2/OpenID provider (`Provider for Video host`, implicit consent, hashed-user-ID subject, strict redirect URI `https://vid.749rmw.com/auth/callback`), with no policy bindings, so every authenticated Authentik user is allowed; add a binding in Authentik to restrict it. Issuer: `https://auth.k8s.749rmw.com/application/o/videohost/`.
+
+`url-shortener-oidc` is encrypted under `infrastructure/secrets/` with keys `client-id`, `client-secret` and `session-key`. The session key signs login cookies (12 hours, stateless); rotating it signs everyone out, and the app cannot revoke a single session. The old shared upload token and its `url-shortener-auth` Secret are no longer used. The probes use the public `/healthz`. These Authentik objects live in Authentik's database, not in Git: back it up, and if the provider is recreated, replace `client-id` and `client-secret` in the encrypted Secret.
 
 The image is built from source commit `2f31615d3578cdaaa63624984300bf03b7a55e4b` using `server/Dockerfile` for linux/amd64 and pinned by digest. The app repository's current release workflow targets a different source layout and needs repair before future automated releases can work. Publish and verify a new image, then update `deployment.yaml` through a reviewed GitOps PR.
 
