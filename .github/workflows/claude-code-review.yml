@@ -12,6 +12,12 @@ on:
 
 jobs:
   claude-review:
+    # Skip release PRs opened by the GitOps bot: the action refuses bot-initiated
+    # runs, and these image-only bumps are validated by the validate-* workflows.
+    if: |
+      github.actor != 'tyler180-gitops-bot[bot]' &&
+      github.event.pull_request.user.login != 'tyler180-gitops-bot[bot]'
+
     # Optional: Filter by PR author
     # if: |
     #   github.event.pull_request.user.login == 'external-contributor' ||
