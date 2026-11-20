@@ -25,7 +25,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: url-shortener
-          image: tyler180/url-shortener:v0.1.2
+          image: tyler180/url-shortener:v0.1.3
           args:
             - -listen=:8080
             - -storage=/videos
