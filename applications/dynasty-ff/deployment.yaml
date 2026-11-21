@@ -24,7 +24,7 @@ spec:
         - name: frontend
           # Public GHCR image built by tyler180/dynasty-ff-frontend on every push to main.
           # NEXT_PUBLIC_* settings (OIDC issuer, client ID, API URL, league) are baked in at build time.
-          image: ghcr.io/tyler180/dynasty-ff-frontend@sha256:73f2ad5b9e17cde6f46cc2872542f6aa033aab3bb19311eb031f6cdc99303b2d
+          image: ghcr.io/tyler180/dynasty-ff-frontend@sha256:9ebaffb5779974c772f40f0cc83fe7a32f36ddaf50cf22096e6d9b59b7951bbe
           ports:
             - name: http
               containerPort: 3000
