@@ -26,4 +26,5 @@ resources:
   - applications/jobtracker.yaml
   - applications/jobtracker-demo.yaml
   - applications/url-shortener.yaml
+  - applications/dynasty-ff.yaml
   - applications/mail.yaml
